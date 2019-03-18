@@ -12,7 +12,7 @@ cydia.downloadBz2('https://khafradev.github.io/')
 ```
 - Invalid repos will be caught
 - Invalid domains will be caught
-- All[^1] errors should be caught
+- All errors should be caught [^1]
 - Uses external library to validate URLs
 [^1]: all errors that I have seen with my API and S0n1c_Dev's
 
