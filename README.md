@@ -1,26 +1,19 @@
 # CyRepo
+ Don't look at old commits unless you're having a bad day.
 
-Quickly gather info on valid Cydia repos!
+# Note
+* Packages are stored by their bundle ID
 
-# Basic Usage
-```js
-const cydia = require('cyrepo');
-cydia.downloadBz2('https://khafradev.github.io/')
-    .then(() => repo.prepareText())
-    .then(console.log)
-    .catch(console.error)
-```
-- Invalid repos will be caught
-- Invalid domains will be caught
-- Handles errors from packages used (will throw its own errors).
-- Uses external library to validate URLs
+# How to use
+Look at [start.js](./start.js) for example usage.
+If you want to update packages frequently, use setInterval.
 
-# Other info
-- Supports promises
-- completely asynchronous
-- Dependencies: node-fetch, validator, seek-bzip, abort-controller and fs
-- test: `node test.js`
+# Dependencies
+* MongoDB for storing package information.
+* Node-fetch
+* Seek-bzip for decoding bunzip files.
 
-# Credits
-1. [S0n1c_Dev](https://twitter.com/S0n1c_Dev/) : Original API/idea
-2. [Khafra](https://twitter.com/Tombs) : Code
+# Adding Repos
+1. Get the URL of the Packages.bz2 file.
+2. Add into [repos.txt](./repos.txt).
+3. Run.

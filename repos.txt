@@ -1,0 +1,15 @@
+https://repo.chariz.io/Packages.bz2
+https://repo.dynastic.co/Packages.bz2
+http://apt.thebigboss.org/repofiles/cydia/dists/stable/main/binary-iphoneos-arm/Packages.bz2
+https://apt.bingner.com/dists/ios/1443.00/main/binary-iphoneos-arm/Packages.bz2
+https://repo.packix.com/Packages.bz2
+https://jb365.github.io/Packages.bz2
+https://opa334.github.io/Packages.bz2
+https://poomsmart.github.io/repo/Packages.bz2
+https://repo.getsileo.app/Packages.bz2
+https://repo.litten.sh/Packages.bz2
+https://repo.openpack.io/Packages.bz2
+https://repo.thireus.com/Packages.bz2
+https://shepgoba.me/repo/Packages.bz2
+https://sparkdev.me/Packages.bz2
+https://yungspecht.github.io/Packages.bz2

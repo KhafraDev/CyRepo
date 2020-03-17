@@ -1,11 +1,7 @@
 {
   "name": "cyrepo",
-  "version": "1.0.0",
-  "description": "get info about Cydia repos",
-  "main": "Cydia.js",
-  "scripts": {
-    "test": "node test.js"
-  },
+  "version": "2.0.0",
+  "description": "Parse package lists from repos.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/khafradev/CyRepo.git"
@@ -21,9 +17,8 @@
   },
   "homepage": "https://github.com/khafradev/CyRepo#readme",
   "dependencies": {
-    "abort-controller": "^2.0.3",
-    "node-fetch": "^2.3.0",
-    "seek-bzip": "^1.0.5",
-    "validator": "^10.11.0"
+    "mongodb": "^3.5.5",
+    "node-fetch": "^2.6.0",
+    "seek-bzip": "^1.0.5"
   }
 }
