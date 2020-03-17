@@ -1,5 +1,7 @@
 const { readFileSync, writeFileSync, createWriteStream } = require('fs');
 const { join } = require('path');
+const { createGunzip } = require('zlib');
+
 const fetch = require('node-fetch');
 const { decode } = require('seek-bzip');
 
@@ -33,20 +35,36 @@ const downloadList = async () => {
                 headers: headers(repo)
             });
 
-            await new Promise((resolve, reject) => {
-                res.body.pipe(createWriteStream(join(__dirname, '..', 'temp', 'encoded.bz2')))
-                .on('error', reject)
-                .on('finish', () => {
-                    try {
-                        const data = decode(readFileSync(join(__dirname, '..', 'temp', 'encoded.bz2')));
-                        writeFileSync(join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), data);
-                        return resolve(data);
-                    } catch(err) {
-                        console.log(err.message);
-                        return reject(repo);
-                    }
+            if(repo.endsWith('.bz2')) {
+                await new Promise((resolve, reject) => {
+                    res.body.pipe(createWriteStream(join(__dirname, '..', 'temp', 'encoded.bz2')))
+                    .on('error', reject)
+                    .on('finish', () => {
+                        try { // nested try/catch, scoping issue I guess
+                            const data = decode(readFileSync(join(__dirname, '..', 'temp', 'encoded.bz2')));
+                            writeFileSync(
+                                join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), 
+                                data
+                            );
+                            return resolve();
+                        } catch(err) {
+                            console.log(err.message);
+                            return reject();
+                        }
+                    });
                 });
-            });
+            } else if(repo.endsWith('.gz')) {
+                await new Promise((resolve, reject) => {
+                    const buf = [];
+                    res.body.pipe(createGunzip())
+                        .on('error', reject)
+                        .on('data', d => buf.push(d.toString()))
+                        .on('end', () => resolve(writeFileSync(
+                            join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), 
+                            buf.join('\n').trim()
+                        )));
+                });
+            }
         } catch(err) {
             console.error('An error occured parsing %s.\n"%s"', repo, err.message);
         }
