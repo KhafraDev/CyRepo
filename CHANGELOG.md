@@ -14,3 +14,6 @@
 * Change database structure to be more practical.
 * Support for uncompressed data.
 * Added example usage of querying data.
+
+# v2.0.3
+* Fixed an issue where ``displayName`` could be undefined. If it happens, the package will default to its bundle ID.

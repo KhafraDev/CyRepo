@@ -59,7 +59,7 @@ const parse = async () => {
         for(const v of Object.values(pkg)) {
             for(const version of Object.values(v)) {
                 const r = await db.updateOne(
-                    { name: `${version.Package}`, displayName: `${version.Name}`},
+                    { name: `${version.Package}`, displayName: `${version.Name || version.Package}`},
                     { $set: { [`version.${version.Version.replace(/\./g, '|')}`]: version } },
                     { upsert: true }
                 );
