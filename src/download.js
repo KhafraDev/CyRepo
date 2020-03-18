@@ -37,13 +37,13 @@ const downloadList = async () => {
 
             if(repo.endsWith('.bz2')) {
                 await new Promise((resolve, reject) => {
-                    res.body.pipe(createWriteStream(join(__dirname, '..', 'temp', 'encoded.bz2')))
+                    res.body.pipe(createWriteStream('./temp/encoded.bz2'))
                     .on('error', reject)
                     .on('finish', () => {
                         try { // nested try/catch, scoping issue I guess
-                            const data = decode(readFileSync(join(__dirname, '..', 'temp', 'encoded.bz2')));
+                            const data = decode(readFileSync('./temp/encoded.bz2'));
                             writeFileSync(
-                                join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), 
+                                `./temp/decoded-${new URL(repo).host}.txt`, 
                                 data
                             );
                             return resolve();
@@ -59,14 +59,14 @@ const downloadList = async () => {
                         .on('error', reject)
                         .on('data', d => buf.push(d.toString()))
                         .on('end', () => resolve(writeFileSync(
-                            join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), 
+                            `./temp/decoded-${new URL(repo).host}.txt`, 
                             buf.join('\n').trim()
                         )));
                 });
             } else if(repo.endsWith('Packages')) {
                 // thanks https://repo.conorthedev.me
                 writeFileSync(
-                    join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), 
+                    `./temp/decoded-${new URL(repo).host}.txt`, 
                     (await res.text()).trim()
                 );
             }

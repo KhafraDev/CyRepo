@@ -12,13 +12,13 @@ const parse = async () => {
     });
     const db = client.db('cyrepo').collection('packages');
 
-    for(const file of readdirSync(join(__dirname, '../temp/'))) {
+    for(const file of readdirSync('./temp/')) {
         if(!file.endsWith('.txt')) {
             continue;
         }
 
         // remove duplicate lines and split each into package into its own chunk
-        const data = [...new Set(readFileSync(join(__dirname, '../temp/', file))
+        const data = [...new Set(readFileSync('./temp/' + file)
             .toString()
             .trim()
             .split(/\n\n|\r\n\r\n/g) // thanks Akusio
