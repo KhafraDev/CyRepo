@@ -48,8 +48,7 @@ const downloadList = async () => {
                             );
                             return resolve();
                         } catch(err) {
-                            console.log(err.message);
-                            return reject();
+                            return reject(err);
                         }
                     });
                 });
@@ -64,9 +63,15 @@ const downloadList = async () => {
                             buf.join('\n').trim()
                         )));
                 });
+            } else if(repo.endsWith('Packages')) {
+                // thanks https://repo.conorthedev.me
+                writeFileSync(
+                    join(__dirname, `../temp/decoded-${new URL(repo).host}.txt`), 
+                    (await res.text()).trim()
+                );
             }
         } catch(err) {
-            console.error('An error occured parsing %s.\n"%s"', repo, err.message);
+            console.error('An error occured parsing %s.\n', repo, err.message);
         }
     }
 

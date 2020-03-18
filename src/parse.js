@@ -17,14 +17,14 @@ const parse = async () => {
             continue;
         }
 
+        // remove duplicate lines and split each into package into its own chunk
         const data = [...new Set(readFileSync(join(__dirname, '../temp/', file))
             .toString()
             .trim()
-            .split(/\n\n/g))];
+            .split(/\n\n|\r\n\r\n/g) // thanks Akusio
+        )];
         
-        /**
-         * Array of packages split by line
-         */
+        /** Array of packages split by line */
         const packages = data.map(e => e.split(/\n/g));
 
         const pkg = {};
@@ -43,28 +43,31 @@ const parse = async () => {
             }
 
             // if the property does not exist, create it
-            if(!(o.Package in pkg)) {
-                Object.defineProperty(pkg, o.Package, { value: {}, enumerable: true });
+            if(!(o.Package.trim() in pkg)) {
+                Object.defineProperty(pkg, o.Package.trim(), { value: {}, enumerable: true });
             }
 
             // this is Eclipse iOS 11's fault.
-            if(o.Package in pkg && !(o.Version in pkg[o.Package])) {
-                Object.defineProperty(pkg[o.Package], o.Version, { value: o, enumerable: true });
+            if(o.Package.trim() in pkg && !(o.Version.trim() in pkg[o.Package.trim()])) {
+                Object.defineProperty(pkg[o.Package.trim()], o.Version.trim(), { 
+                    value: o, 
+                    enumerable: true 
+                });
             }
         }
 
-        for(const [k, v] of Object.entries(pkg)) {
-            const key = k.replace(/\./g, '-');
-            const r = await db.updateOne(
-                { [`${key}`]: { $exists: true } }, 
-                { $set: { [`${key}`]: v } }, 
-                { upsert: true }
-            );
+        for(const v of Object.values(pkg)) {
+            for(const version of Object.values(v)) {
+                const r = await db.updateOne(
+                    { name: `${version.Package}`, displayName: `${version.Name}`},
+                    { $set: { [`version.${version.Version.replace(/\./g, '|')}`]: version } },
+                    { upsert: true }
+                );
             
-
-            if(r.result.ok !== 1) {
-                console.log(k, v);
-                process.exit();
+                if(r.result.ok !== 1) {
+                    console.log('An error occured on this package:', k, v);
+                    process.exit();
+                }
             }
         }
     }

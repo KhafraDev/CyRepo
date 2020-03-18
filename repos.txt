@@ -35,7 +35,7 @@ http://limneos.net/repo/Packages.bz2
 https://lumartti.github.io/Packages.bz2
 https://mcapollo.github.io/Public/Packages.bz2
 https://qwertyuiop1379.github.io/Packages.bz2
-https://repo.conorthedev.me/Packages.bz2
+https://repo.conorthedev.me/Packages
 https://repo.cpdigitaldarkroom.com/Packages.bz2
 https://repo.incendo.ws/Packages.bz2
 https://repo.midnightchips.me/Packages.bz2
